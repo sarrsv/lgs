@@ -1,0 +1,55 @@
+<?php
+// Fetch the URL from the Google Sheet (Replace with your actual Google Sheet URL)
+$googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/1vjhms4B_iQ47cFPq-1qQjcT_jZr4BA8UYVW0MXrmkSw/pubhtml?gid=0&single=true";
+
+// Fetch the HTML content of the Google Sheet
+$googleSheetContent = file_get_contents($googleSheetUrl);
+
+// Extract the redirect URL from the Google Sheet content
+preg_match('/<td>(.+)<\/td>/', $googleSheetContent, $matches);
+$redirectUrl = $matches[1];
+
+// Set the target date for the countdown
+$targetDate = strtotime("2023-08-31 00:00:00");
+
+// Calculate the time remaining for the countdown
+$now = time();
+$timeRemaining = $targetDate - $now;
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown Timer with Redirect</title>
+<style>
+  /* Your CSS styles here */
+</style>
+</head>
+<body>
+<div class="container">
+  <p class="text">Welcome to My Countdown Page!</p>
+  <div class="countdown" id="countdown"></div>
+</div>
+
+<script>
+// Update the countdown every second
+const countdownInterval = setInterval(() => {
+  const timeRemaining = <?php echo $timeRemaining; ?>;
+
+  if (timeRemaining <= 0) {
+    clearInterval(countdownInterval);
+    // Redirect to the URL fetched from Google Sheet
+    window.location.href = "<?php echo $redirectUrl; ?>";
+  } else {
+    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+    document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+}, 1000);
+</script>
+</body>
+</html>
