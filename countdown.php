@@ -1,6 +1,6 @@
 <?php
 // Fetch the Google Sheet content
-$googleSheetContent = file_get_contents("https://docs.google.com/spreadsheets/d/e/your_spreadsheet_id/pubhtml?gid=0&single=true");
+$googleSheetContent = file_get_contents("https://docs.google.com/spreadsheets/d/e/1vjhms4B_iQ47cFPq-1qQjcT_jZr4BA8UYVW0MXrmkSw/pubhtml?gid=0&single=true");
 
 // Extract URLs from the Google Sheet content
 preg_match_all('/<td>(https?:\/\/.+)<\/td>/', $googleSheetContent, $matches);
