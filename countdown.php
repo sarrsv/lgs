@@ -1,13 +1,10 @@
 <?php
-// Fetch the URL from the Google Sheet (Replace with your actual Google Sheet URL)
-$googleSheetUrl = "https://docs.google.com/spreadsheets/d/e/1vjhms4B_iQ47cFPq-1qQjcT_jZr4BA8UYVW0MXrmkSw/pubhtml?gid=0&single=true";
+// Fetch the Google Sheet content
+$googleSheetContent = file_get_contents("https://docs.google.com/spreadsheets/d/e/your_spreadsheet_id/pubhtml?gid=0&single=true");
 
-// Fetch the HTML content of the Google Sheet
-$googleSheetContent = file_get_contents($googleSheetUrl);
-
-// Extract the redirect URL from the Google Sheet content
-preg_match('/<td>(.+)<\/td>/', $googleSheetContent, $matches);
-$redirectUrl = $matches[1];
+// Extract URLs from the Google Sheet content
+preg_match_all('/<td>(https?:\/\/.+)<\/td>/', $googleSheetContent, $matches);
+$redirectUrls = $matches[1]; // Array of extracted URLs
 
 // Set the target date for the countdown
 $targetDate = strtotime("2023-08-31 00:00:00");
